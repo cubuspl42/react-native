@@ -91,6 +91,18 @@ void AttributedString::prependAttributedString(
       attributedString.fragments_.end());
 }
 
+int AttributedString::countAttachments() const {
+  int count = 0;
+
+  for (const auto& fragment : fragments_) {
+    if (fragment.isAttachment()) {
+      ++count;
+    }
+  }
+
+  return count;
+}
+
 const Fragments& AttributedString::getFragments() const {
   return fragments_;
 }

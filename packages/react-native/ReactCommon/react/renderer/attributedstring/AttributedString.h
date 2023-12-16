@@ -76,6 +76,11 @@ class AttributedString : public Sealable, public DebugStringConvertible {
   void prependAttributedString(const AttributedString& attributedString);
 
   /*
+   * Returns the number of attachments in the attributed string.
+   */
+  int countAttachments() const;
+
+  /*
    * Returns a read-only reference to a list of fragments.
    */
   const Fragments& getFragments() const;
