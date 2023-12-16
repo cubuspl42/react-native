@@ -10,6 +10,7 @@
 #include <memory>
 
 #include <react/renderer/attributedstring/TextAttributes.h>
+#include <react/renderer/attributedstring/ShardAttributes.h>
 #include <react/renderer/core/Sealable.h>
 #include <react/renderer/core/ShadowNode.h>
 #include <react/renderer/debug/DebugStringConvertible.h>
@@ -76,6 +77,11 @@ class AttributedString : public Sealable, public DebugStringConvertible {
   class Shard : public Sealable, public DebugStringConvertible {
    public:
     using Fragments = std::vector<Fragment>;
+
+    /*
+     * Defines the attributes (like fill-line-gap, border, etc.) of the span.
+     */
+    SpanAttributes spanAttributes;
 
     /*
      * Returns a read-only reference to a list of fragments.
