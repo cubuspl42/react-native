@@ -59,7 +59,7 @@ using namespace facebook::react;
 
   NSString *accessibilityLabel = _view.accessibilityLabel;
   if (accessibilityLabel.length == 0) {
-    accessibilityLabel = RCTNSStringFromString(_attributedString.getString());
+    accessibilityLabel = RCTNSStringFromString(_attributedString.getJoinedString());
   }
   // add first element has the text for the whole textview in order to read out the whole text
   RCTAccessibilityElement *firstElement =

@@ -274,7 +274,7 @@ TextMeasurement TextLayoutManager::doMeasure(
     LayoutConstraints layoutConstraints) const {
   layoutConstraints.maximumSize.height = std::numeric_limits<Float>::infinity();
 
-  const int attachmentsCount = attributedString.countAttachments();
+  const int attachmentsCount = attributedString.countAllAttachments();
 
   auto env = Environment::current();
   auto attachmentPositions = env->NewFloatArray(attachmentsCount * 2);
@@ -334,7 +334,7 @@ TextMeasurement TextLayoutManager::doMeasureMapBuffer(
     LayoutConstraints layoutConstraints) const {
   layoutConstraints.maximumSize.height = std::numeric_limits<Float>::infinity();
 
-  const int attachmentsCount = attributedString.countAttachments();
+  const int attachmentsCount = attributedString.countAllAttachments();
 
   auto env = Environment::current();
   auto attachmentPositions = env->NewFloatArray(attachmentsCount * 2);
@@ -363,7 +363,7 @@ TextMeasurement TextLayoutManager::doMeasureMapBuffer(
   auto attachments = TextMeasurement::Attachments{};
   if (attachmentsCount > 0) {
     int attachmentIndex = 0;
-    for (const auto& fragment : attributedString.getFragments()) {
+    for (const auto& fragment : attributedString.getAllFragments()) {
       if (fragment.isAttachment()) {
         float top = attachmentData[attachmentIndex * 2];
         float left = attachmentData[attachmentIndex * 2 + 1];

@@ -916,13 +916,13 @@ inline folly::dynamic toDynamic(const AttributedString::Fragment& fragment) {
 inline folly::dynamic toDynamic(const AttributedString& attributedString) {
   auto value = folly::dynamic::object();
   auto fragments = folly::dynamic::array();
-  for (auto fragment : attributedString.getFragments()) {
+  for (auto fragment : attributedString.getAllFragments()) {
     fragments.push_back(toDynamic(fragment));
   }
   value("fragments", fragments);
   value(
       "hash", std::hash<facebook::react::AttributedString>{}(attributedString));
-  value("string", attributedString.getString());
+  value("string", attributedString.getJoinedString());
   return value;
 }
 
@@ -1163,7 +1163,7 @@ inline MapBuffer toMapBuffer(const AttributedString& attributedString) {
   auto fragmentsBuilder = MapBufferBuilder();
 
   int index = 0;
-  for (auto fragment : attributedString.getFragments()) {
+  for (auto fragment : attributedString.getAllFragments()) {
     fragmentsBuilder.putMapBuffer(index++, toMapBuffer(fragment));
   }
 
@@ -1171,7 +1171,7 @@ inline MapBuffer toMapBuffer(const AttributedString& attributedString) {
   builder.putInt(
       AS_KEY_HASH,
       std::hash<facebook::react::AttributedString>{}(attributedString));
-  builder.putString(AS_KEY_STRING, attributedString.getString());
+  builder.putString(AS_KEY_STRING, attributedString.getJoinedString());
   auto fragmentsMap = fragmentsBuilder.build();
   builder.putMapBuffer(AS_KEY_FRAGMENTS, fragmentsMap);
   return builder.build();

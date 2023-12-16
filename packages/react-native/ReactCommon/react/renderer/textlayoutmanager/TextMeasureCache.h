@@ -150,20 +150,56 @@ inline size_t attributedStringFragmentHashLayoutWise(
       fragment.string, textAttributesHashLayoutWise(fragment.textAttributes));
 }
 
-inline bool areAttributedStringsEquivalentLayoutWise(
-    const AttributedString& lhs,
-    const AttributedString& rhs) {
-  auto& lhsFragment = lhs.getFragments();
-  auto& rhsFragment = rhs.getFragments();
+inline bool areAttributedStringShardsEquivalentLayoutWise(
+    const AttributedString::Shard& lhs,
+    const AttributedString::Shard& rhs) {
+  // TODO(cubuspl42): Take shard attributes into consideration
 
-  if (lhsFragment.size() != rhsFragment.size()) {
+  auto& lhsFragments = lhs.getFragments();
+  auto& rhsFragments = rhs.getFragments();
+
+  if (lhsFragments.size() != rhsFragments.size()) {
     return false;
   }
 
-  auto size = lhsFragment.size();
+  auto size = lhsFragments.size();
   for (auto i = size_t{0}; i < size; i++) {
     if (!areAttributedStringFragmentsEquivalentLayoutWise(
-            lhsFragment.at(i), rhsFragment.at(i))) {
+        lhsFragments.at(i), rhsFragments.at(i))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+inline size_t attributedStringShardHashLayoutWise(
+    const AttributedString::Shard& attributedString) {
+  auto seed = size_t{0};
+
+  // TODO(cubuspl42): Take shard attributes into consideration
+
+  for (const auto& fragment : attributedString.getFragments()) {
+    facebook::react::hash_combine(seed, attributedStringFragmentHashLayoutWise(fragment));
+  }
+
+  return seed;
+}
+
+inline bool areAttributedStringsEquivalentLayoutWise(
+    const AttributedString& lhs,
+    const AttributedString& rhs) {
+  auto& lhsShards = lhs.getShards();
+  auto& rhsShards = rhs.getShards();
+
+  if (lhsShards.size() != rhsShards.size()) {
+    return false;
+  }
+
+  auto size = lhsShards.size();
+  for (auto i = size_t{0}; i < size; i++) {
+    if (!areAttributedStringShardsEquivalentLayoutWise(
+        lhsShards.at(i), rhsShards.at(i))) {
       return false;
     }
   }
@@ -175,8 +211,8 @@ inline size_t attributedStringHashLayoutWise(
     const AttributedString& attributedString) {
   auto seed = size_t{0};
 
-  for (const auto& fragment : attributedString.getFragments()) {
-    facebook::react::hash_combine(seed, attributedStringFragmentHashLayoutWise(fragment));
+  for (const auto& shard : attributedString.getShards()) {
+    facebook::react::hash_combine(seed, attributedStringShardHashLayoutWise(shard));
   }
 
   return seed;

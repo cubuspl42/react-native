@@ -80,8 +80,6 @@ Content ParagraphShadowNode::getContentWithMeasuredAttachments(
   // Having enforced minimum size for text fragments doesn't make much sense.
   localLayoutConstraints.minimumSize = Size{0, 0};
 
-  auto& fragments = content.attributedString.getFragments();
-
   for (const auto& attachment : content.attachments) {
     auto laytableShadowNode =
         traitCast<const LayoutableShadowNode*>(attachment.shadowNode);
@@ -101,8 +99,9 @@ Content ParagraphShadowNode::getContentWithMeasuredAttachments(
     auto fragmentLayoutMetrics = LayoutMetrics{};
     fragmentLayoutMetrics.pointScaleFactor = layoutContext.pointScaleFactor;
     fragmentLayoutMetrics.frame.size = size;
-    fragments[attachment.fragmentIndex].parentShadowView.layoutMetrics =
-        fragmentLayoutMetrics;
+
+    auto &fragment = content.attributedString.getFragment(attachment.fragmentHandle);
+    fragment.parentShadowView.layoutMetrics = fragmentLayoutMetrics;
   }
 
   return content;

@@ -405,7 +405,7 @@ NSAttributedString *RCTNSAttributedStringFromAttributedString(const AttributedSt
 
   [nsAttributedString beginEditing];
 
-  for (auto fragment : attributedString.getFragments()) {
+  for (auto fragment : attributedString.getAllFragments()) {
     NSMutableAttributedString *nsAttributedStringFragment =
         RCTNSAttributedStringFragmentWithAttributesFromFragment(fragment, placeholderImage);
 
