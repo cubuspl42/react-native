@@ -405,12 +405,15 @@ NSAttributedString *RCTNSAttributedStringFromAttributedString(const AttributedSt
 
   [nsAttributedString beginEditing];
 
-  for (auto fragment : attributedString.getAllFragments()) {
-    NSMutableAttributedString *nsAttributedStringFragment =
-        RCTNSAttributedStringFragmentWithAttributesFromFragment(fragment, placeholderImage);
+  for (auto shard : attributedString.getShards()) {
+    for (auto fragment : shard.getFragments()) {
+      NSMutableAttributedString *nsAttributedStringFragment =
+          RCTNSAttributedStringFragmentWithAttributesFromFragment(fragment, placeholderImage);
 
-    [nsAttributedString appendAttributedString:nsAttributedStringFragment];
+      [nsAttributedString appendAttributedString:nsAttributedStringFragment];
+    }
   }
+
   RCTApplyBaselineOffset(nsAttributedString);
   [nsAttributedString endEditing];
 
