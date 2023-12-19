@@ -1,11 +1,11 @@
-package com.facebook.react.views.text.fragments
+package com.facebook.react.views.text.attributedstring
 
 import com.facebook.react.views.text.TextAttributeProps
 
 /**
- * Interface for a text fragment
+ * Interface for an attributed string fragment
  */
-internal interface TextFragment {
+internal interface AttributedStringFragment {
   val textAttributeProps: TextAttributeProps
 
   val string: String?

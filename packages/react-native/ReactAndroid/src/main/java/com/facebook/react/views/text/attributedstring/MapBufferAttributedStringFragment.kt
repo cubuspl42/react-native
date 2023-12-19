@@ -1,4 +1,4 @@
-package com.facebook.react.views.text.fragments
+package com.facebook.react.views.text.attributedstring
 
 import com.facebook.react.common.mapbuffer.MapBuffer
 import com.facebook.react.views.text.TextAttributeProps
@@ -11,9 +11,9 @@ import com.facebook.react.views.text.TextLayoutManagerMapBuffer.FR_KEY_TEXT_ATTR
 import com.facebook.react.views.text.TextLayoutManagerMapBuffer.FR_KEY_WIDTH
 
 /**
- * A [TextFragment] implementation backed by a [MapBuffer]
+ * A [AttributedStringFragment] implementation backed by a [MapBuffer]
  */
-internal class MapBufferTextFragment(private val fragment: MapBuffer) : TextFragment {
+internal class MapBufferAttributedStringFragment(private val fragment: MapBuffer) : AttributedStringFragment {
   override val textAttributeProps: TextAttributeProps
     get() = TextAttributeProps.fromMapBuffer(fragment.getMapBuffer(FR_KEY_TEXT_ATTRIBUTES.toInt()))
 
