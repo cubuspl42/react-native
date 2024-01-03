@@ -4,7 +4,7 @@ package com.facebook.react.views.text.attributedstring
  * Interface for an attributed string
  */
 internal interface AttributedString {
-  fun getFragment(index: Int): AttributedStringFragment
+  fun getShard(index: Int): AttributedStringShard
 
-  val fragmentCount: Int
+  val shardCount: Int
 }

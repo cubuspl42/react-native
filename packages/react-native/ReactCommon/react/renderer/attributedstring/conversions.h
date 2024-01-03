@@ -767,6 +767,17 @@ inline std::string toString(const AttributedString::Range& range) {
 
 #ifdef ANDROID
 
+template<typename T>
+inline folly::dynamic toDynamicList(const std::vector<T>& list) {
+  auto array = folly::dynamic::array();
+
+  for (auto element : list) {
+    array.push_back(toDynamic(element));
+  }
+
+  return array;
+}
+
 inline folly::dynamic toDynamic(
     const ParagraphAttributes& paragraphAttributes) {
   auto values = folly::dynamic::object();
@@ -913,13 +924,18 @@ inline folly::dynamic toDynamic(const AttributedString::Fragment& fragment) {
   return value;
 }
 
+inline folly::dynamic toDynamic(const AttributedString::Shard& shard) {
+  auto value = folly::dynamic::object();
+
+  // TODO(cubuspl42): Take shard attributes into consideration
+
+  value("fragments", toDynamicList(shard.getFragments()));
+  return value;
+}
+
 inline folly::dynamic toDynamic(const AttributedString& attributedString) {
   auto value = folly::dynamic::object();
-  auto fragments = folly::dynamic::array();
-  for (auto fragment : attributedString.getAllFragments()) {
-    fragments.push_back(toDynamic(fragment));
-  }
-  value("fragments", fragments);
+  value("shards", toDynamicList(attributedString.getShards()));
   value(
       "hash", std::hash<facebook::react::AttributedString>{}(attributedString));
   value("string", attributedString.getJoinedString());
@@ -936,8 +952,10 @@ inline folly::dynamic toDynamic(const AttributedString::Range& range) {
 // constants for AttributedString serialization
 constexpr static MapBuffer::Key AS_KEY_HASH = 0;
 constexpr static MapBuffer::Key AS_KEY_STRING = 1;
-constexpr static MapBuffer::Key AS_KEY_FRAGMENTS = 2;
-constexpr static MapBuffer::Key AS_KEY_CACHE_ID = 3;
+constexpr static MapBuffer::Key AS_KEY_SHARDS = 2;
+
+// constants for Shard serialization
+constexpr static MapBuffer::Key SH_KEY_FRAGMENTS = 0;
 
 // constants for Fragment serialization
 constexpr static MapBuffer::Key FR_KEY_STRING = 0;
@@ -983,6 +1001,18 @@ constexpr static MapBuffer::Key PA_KEY_TEXT_BREAK_STRATEGY = 2;
 constexpr static MapBuffer::Key PA_KEY_ADJUST_FONT_SIZE_TO_FIT = 3;
 constexpr static MapBuffer::Key PA_KEY_INCLUDE_FONT_PADDING = 4;
 constexpr static MapBuffer::Key PA_KEY_HYPHENATION_FREQUENCY = 5;
+
+template<typename T>
+inline MapBuffer toMapBufferList(const std::vector<T>& list) {
+  auto builder = MapBufferBuilder();
+
+  int index = 0;
+  for (auto element : list) {
+    builder.putMapBuffer(index++, toMapBuffer(element));
+  }
+
+  return builder.build();
+}
 
 inline MapBuffer toMapBuffer(const ParagraphAttributes& paragraphAttributes) {
   auto builder = MapBufferBuilder();
@@ -1159,21 +1189,23 @@ inline MapBuffer toMapBuffer(const AttributedString::Fragment& fragment) {
   return builder.build();
 }
 
+inline MapBuffer toMapBuffer(const AttributedString::Shard& shard) {
+  auto builder = MapBufferBuilder();
+
+  // TODO(cubuspl42): Take shard attributes into consideration
+
+  builder.putMapBuffer(SH_KEY_FRAGMENTS, toMapBufferList(shard.getFragments()));
+  return builder.build();
+}
+
 inline MapBuffer toMapBuffer(const AttributedString& attributedString) {
-  auto fragmentsBuilder = MapBufferBuilder();
-
-  int index = 0;
-  for (auto fragment : attributedString.getAllFragments()) {
-    fragmentsBuilder.putMapBuffer(index++, toMapBuffer(fragment));
-  }
-
   auto builder = MapBufferBuilder();
   builder.putInt(
       AS_KEY_HASH,
       std::hash<facebook::react::AttributedString>{}(attributedString));
+
   builder.putString(AS_KEY_STRING, attributedString.getJoinedString());
-  auto fragmentsMap = fragmentsBuilder.build();
-  builder.putMapBuffer(AS_KEY_FRAGMENTS, fragmentsMap);
+  builder.putMapBuffer(AS_KEY_SHARDS, toMapBufferList(attributedString.getShards()));
   return builder.build();
 }
 

@@ -7,11 +7,11 @@ import com.facebook.react.bridge.ReadableMap
  * [AttributedString] backed by a [ReadableMap]
  */
 internal class BridgeAttributedString(private val attributedString: ReadableMap) : AttributedString {
-  override fun getFragment(index: Int): AttributedStringFragment = BridgeAttributedStringFragment(fragments.getMap(index))
+  override fun getShard(index: Int): AttributedStringShard = BridgeAttributedStringShard(shard = shards.getMap(index))
 
-  override val fragmentCount: Int
-    get() = fragments.size()
+  override val shardCount: Int
+    get() = shards.size()
 
-  private val fragments: ReadableArray
-    get() = attributedString.getArray("fragments")!!
+  private val shards: ReadableArray
+    get() = attributedString.getArray("shards")!!
 }

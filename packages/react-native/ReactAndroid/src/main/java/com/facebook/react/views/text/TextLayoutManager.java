@@ -130,8 +130,11 @@ public class TextLayoutManager {
       ReadableMap attributedString,
       SpannableStringBuilder sb,
       List<SetSpanOperation> ops) {
+    // TODO(cubuspl42): Make this work for multiple shards
+    final var rootShard = attributedString.getArray("shards").getMap(0);
+
     buildSpannableFromFragmentsDuplicated(
-        context, attributedString.getArray("fragments"), sb, ops);
+        context, rootShard.getArray("fragments"), sb, ops);
   }
 
   private static void buildSpannableFromAttributedStringUnified(

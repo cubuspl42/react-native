@@ -12,10 +12,11 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.View
 import com.facebook.react.common.IntConstants
-import com.facebook.react.views.text.attributedstring.AttributedString
+import com.facebook.react.views.text.attributedstring.AttributedStringShard
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ReactAccessibilityDelegate
 import com.facebook.react.views.text.attributedstring.AttributedStringFragment
+import com.facebook.react.views.text.attributedstring.AttributedString
 import com.facebook.react.views.text.span.CustomLetterSpacingSpan
 import com.facebook.react.views.text.span.CustomLineHeightSpan
 import com.facebook.react.views.text.span.CustomStyleSpan
@@ -43,8 +44,26 @@ internal object TextLayoutUtils {
     sb: SpannableStringBuilder,
     ops: MutableList<SetSpanOperation>,
   ) {
-    for (i in 0 until attributedString.fragmentCount) {
-      val fragment = attributedString.getFragment(i)
+    for (i in 0 until attributedString.shardCount) {
+      val shard = attributedString.getShard(i)
+
+      addApplicableShardSpans(
+        context = context,
+        shard = shard,
+        sb = sb,
+        ops = ops,
+      )
+    }
+  }
+
+  private fun addApplicableShardSpans(
+    context: Context,
+    shard: AttributedStringShard,
+    sb: SpannableStringBuilder,
+    ops: MutableList<SetSpanOperation>,
+  ) {
+    for (i in 0 until shard.fragmentCount) {
+      val fragment = shard.getFragment(i)
 
       addApplicableFragmentSpans(
         context = context,

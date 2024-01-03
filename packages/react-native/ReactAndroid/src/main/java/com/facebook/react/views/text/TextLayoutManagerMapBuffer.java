@@ -64,8 +64,11 @@ public class TextLayoutManagerMapBuffer {
   // constants for AttributedString serialization
   public static final short AS_KEY_HASH = 0;
   public static final short AS_KEY_STRING = 1;
-  public static final short AS_KEY_FRAGMENTS = 2;
+  public static final short AS_KEY_SHARDS = 2;
   public static final short AS_KEY_CACHE_ID = 3;
+
+  // constants for Shard serialization
+  public static final short SH_KEY_FRAGMENTS = 0;
 
   // constants for Fragment serialization
   public static final short FR_KEY_STRING = 0;
@@ -122,12 +125,20 @@ public class TextLayoutManagerMapBuffer {
   }
 
   public static boolean isRTL(MapBuffer attributedString) {
-    MapBuffer fragments = attributedString.getMapBuffer(AS_KEY_FRAGMENTS);
+    MapBuffer shards = attributedString.getMapBuffer(AS_KEY_SHARDS);
+    if (shards.getCount() == 0) {
+      return false;
+    }
+
+    MapBuffer shard = shards.getMapBuffer((short) 0);
+
+    MapBuffer fragments = shard.getMapBuffer(SH_KEY_FRAGMENTS);
     if (fragments.getCount() == 0) {
       return false;
     }
 
     MapBuffer fragment = fragments.getMapBuffer((short) 0);
+
     MapBuffer textAttributes = fragment.getMapBuffer(FR_KEY_TEXT_ATTRIBUTES);
 
     if (!textAttributes.contains(TextAttributeProps.TA_KEY_LAYOUT_DIRECTION)) {
@@ -150,7 +161,10 @@ public class TextLayoutManagerMapBuffer {
 
   private static void buildSpannableFromAttributedStringDuplicated(
       Context context, MapBuffer attributedString, SpannableStringBuilder sb, List<SetSpanOperation> ops) {
-    buildSpannableFromFragmentsDuplicated(context, attributedString.getMapBuffer(AS_KEY_FRAGMENTS), sb, ops);
+    // TODO(cubuspl42): Make this work for multiple shards
+    final var rootShard = attributedString.getMapBuffer(AS_KEY_SHARDS).getMapBuffer(0);
+
+    buildSpannableFromFragmentsDuplicated(context, rootShard.getMapBuffer(SH_KEY_FRAGMENTS), sb, ops);
   }
 
   private static void buildSpannableFromAttributedStringUnified(
