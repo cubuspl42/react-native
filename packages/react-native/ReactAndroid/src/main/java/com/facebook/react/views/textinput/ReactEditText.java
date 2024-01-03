@@ -8,6 +8,7 @@
 package com.facebook.react.views.textinput;
 
 import static com.facebook.react.uimanager.UIManagerHelper.getReactContext;
+import static com.facebook.react.views.text.ReactTextViewUtilsKt.findEffectiveTypeface;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -52,6 +53,7 @@ import com.facebook.react.uimanager.ReactAccessibilityDelegate;
 import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.text.FontAttributeProvider;
 import com.facebook.react.views.text.span.CustomLetterSpacingSpan;
 import com.facebook.react.views.text.span.CustomLineHeightSpan;
 import com.facebook.react.views.text.span.CustomStyleSpan;
@@ -82,7 +84,7 @@ import java.util.Objects;
  * called this explicitly. This is the default behavior on other platforms as well.
  * VisibleForTesting from {@link TextInputEventsTestCase}.
  */
-public class ReactEditText extends AppCompatEditText {
+public class ReactEditText extends AppCompatEditText implements FontAttributeProvider {
   private final InputMethodManager mInputMethodManager;
   private final String TAG = ReactEditText.class.getSimpleName();
   public static final boolean DEBUG_MODE = ReactBuildConfig.DEBUG && false;
@@ -544,9 +546,20 @@ public class ReactEditText extends AppCompatEditText {
     }
   }
 
+  @Nullable
+  @Override
+  public String getFontFamily() {
+    return mFontFamily;
+  }
+
   public void setFontFamily(String fontFamily) {
     mFontFamily = fontFamily;
     mTypefaceDirty = true;
+  }
+
+  @Override
+  public int getFontWeight() {
+    return mFontWeight;
   }
 
   public void setFontWeight(String fontWeightString) {
@@ -555,6 +568,11 @@ public class ReactEditText extends AppCompatEditText {
       mFontWeight = fontWeight;
       mTypefaceDirty = true;
     }
+  }
+
+  @Override
+  public int getFontStyle() {
+    return mFontStyle;
   }
 
   public void setFontStyle(String fontStyleString) {
@@ -580,10 +598,7 @@ public class ReactEditText extends AppCompatEditText {
 
     mTypefaceDirty = false;
 
-    Typeface newTypeface =
-        ReactTypefaceUtils.applyStyles(
-            getTypeface(), mFontStyle, mFontWeight, mFontFamily, getContext().getAssets());
-    setTypeface(newTypeface);
+    setTypeface(findEffectiveTypeface(this, this));
 
     // Match behavior of CustomStyleSpan and enable SUBPIXEL_TEXT_FLAG when setting anything
     // nonstandard
@@ -760,9 +775,9 @@ public class ReactEditText extends AppCompatEditText {
         sb,
         CustomStyleSpan.class,
         (span) -> {
-          return span.getStyle() == mFontStyle
+          return span.getFontStyle() == mFontStyle
               && Objects.equals(span.getFontFamily(), mFontFamily)
-              && span.getWeight() == mFontWeight
+              && span.getFontWeight() == mFontWeight
               && Objects.equals(span.getFontFeatureSettings(), getFontFeatureSettings());
         });
   }
