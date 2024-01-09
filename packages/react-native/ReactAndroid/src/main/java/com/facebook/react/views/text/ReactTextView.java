@@ -8,6 +8,7 @@
 package com.facebook.react.views.text;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -41,6 +42,7 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewDefaults;
 import com.facebook.react.uimanager.common.UIManagerType;
 import com.facebook.react.uimanager.common.ViewUtil;
+import com.facebook.react.views.text.span.ReactBackgroundSpan;
 import com.facebook.react.views.text.span.ReactTagSpan;
 import com.facebook.react.views.text.span.TextInlineImageSpan;
 import com.facebook.react.views.text.span.TextInlineViewPlaceholderSpan;
@@ -543,6 +545,13 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
         span.onFinishTemporaryDetach();
       }
     }
+  }
+
+  @Override
+  protected void onDraw(Canvas canvas) {
+    ReactBackgroundSpan.drawBackground(this, canvas);
+
+    super.onDraw(canvas);
   }
 
   @Override
