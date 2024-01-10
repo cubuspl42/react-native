@@ -52,7 +52,7 @@ class BaseTextShadowNode {
    * function, or if TextInput should inherit from BaseTextShadowNode.
    */
   static void buildAttributedString(
-      const TextAttributes& baseTextAttributes,
+      const FragmentAttributes& baseFragmentAttributes,
       const ShadowNode& parentNode,
       AttributedString& outAttributedString,
       Attachments& outAttachments);

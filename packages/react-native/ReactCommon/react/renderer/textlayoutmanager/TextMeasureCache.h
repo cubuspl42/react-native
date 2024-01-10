@@ -82,9 +82,9 @@ using TextMeasureCache = SimpleThreadSafeCache<
     TextMeasurement,
     kSimpleThreadSafeCacheSizeCap>;
 
-inline bool areTextAttributesEquivalentLayoutWise(
-    const TextAttributes& lhs,
-    const TextAttributes& rhs) {
+inline bool areFragmentAttributesEquivalentLayoutWise(
+    const FragmentAttributes& lhs,
+    const FragmentAttributes& rhs) {
   // Here we check all attributes that affect layout metrics and don't check any
   // attributes that affect only a decorative aspect of displayed text (like
   // colors).
@@ -110,30 +110,30 @@ inline bool areTextAttributesEquivalentLayoutWise(
       floatEquality(lhs.lineHeight, rhs.lineHeight);
 }
 
-inline size_t textAttributesHashLayoutWise(
-    const TextAttributes& textAttributes) {
+inline size_t fragmentAttributesHashLayoutWise(
+    const FragmentAttributes& fragmentAttributes) {
   // Taking into account the same props as
-  // `areTextAttributesEquivalentLayoutWise` mentions.
+  // `areFragmentAttributesEquivalentLayoutWise` mentions.
   return facebook::react::hash_combine(
-      textAttributes.fontFamily,
-      textAttributes.fontSize,
-      textAttributes.fontSizeMultiplier,
-      textAttributes.fontWeight,
-      textAttributes.fontStyle,
-      textAttributes.fontVariant,
-      textAttributes.allowFontScaling,
-      textAttributes.dynamicTypeRamp,
-      textAttributes.letterSpacing,
-      textAttributes.lineHeight,
-      textAttributes.alignment);
+      fragmentAttributes.fontFamily,
+      fragmentAttributes.fontSize,
+      fragmentAttributes.fontSizeMultiplier,
+      fragmentAttributes.fontWeight,
+      fragmentAttributes.fontStyle,
+      fragmentAttributes.fontVariant,
+      fragmentAttributes.allowFontScaling,
+      fragmentAttributes.dynamicTypeRamp,
+      fragmentAttributes.letterSpacing,
+      fragmentAttributes.lineHeight,
+      fragmentAttributes.alignment);
 }
 
 inline bool areAttributedStringFragmentsEquivalentLayoutWise(
     const AttributedString::Fragment& lhs,
     const AttributedString::Fragment& rhs) {
   return lhs.string == rhs.string &&
-      areTextAttributesEquivalentLayoutWise(
-             lhs.textAttributes, rhs.textAttributes) &&
+      areFragmentAttributesEquivalentLayoutWise(
+             lhs.attributes, rhs.attributes) &&
       // LayoutMetrics of an attachment fragment affects the size of a measured
       // attributed string.
       (!lhs.isAttachment() ||
@@ -147,7 +147,7 @@ inline size_t attributedStringFragmentHashLayoutWise(
   // because they are logically interdependent and this can break an invariant
   // between hash and equivalence functions (and cause cache misses).
   return facebook::react::hash_combine(
-      fragment.string, textAttributesHashLayoutWise(fragment.textAttributes));
+      fragment.string, fragmentAttributesHashLayoutWise(fragment.attributes));
 }
 
 inline bool areAttributedStringShardsEquivalentLayoutWise(

@@ -12,7 +12,7 @@
 #include <react/debug/react_native_expect.h>
 #include <react/renderer/attributedstring/AttributedString.h>
 #include <react/renderer/attributedstring/ParagraphAttributes.h>
-#include <react/renderer/attributedstring/TextAttributes.h>
+#include <react/renderer/attributedstring/FragmentAttributes.h>
 #include <react/renderer/attributedstring/conversions.h>
 #include <react/renderer/attributedstring/primitives.h>
 #include <react/renderer/components/view/accessibilityPropsConversions.h>
@@ -814,95 +814,95 @@ inline folly::dynamic toDynamic(const FontVariant& fontVariant) {
   return result;
 }
 
-inline folly::dynamic toDynamic(const TextAttributes& textAttributes) {
+inline folly::dynamic toDynamic(const FragmentAttributes& fragmentAttributes) {
   auto _textAttributes = folly::dynamic::object();
-  if (textAttributes.foregroundColor) {
+  if (fragmentAttributes.foregroundColor) {
     _textAttributes(
-        "foregroundColor", toAndroidRepr(textAttributes.foregroundColor));
+        "foregroundColor", toAndroidRepr(fragmentAttributes.foregroundColor));
   }
-  if (textAttributes.backgroundColor) {
+  if (fragmentAttributes.backgroundColor) {
     _textAttributes(
-        "backgroundColor", toAndroidRepr(textAttributes.backgroundColor));
+        "backgroundColor", toAndroidRepr(fragmentAttributes.backgroundColor));
   }
-  if (!std::isnan(textAttributes.opacity)) {
-    _textAttributes("opacity", textAttributes.opacity);
+  if (!std::isnan(fragmentAttributes.opacity)) {
+    _textAttributes("opacity", fragmentAttributes.opacity);
   }
-  if (!textAttributes.fontFamily.empty()) {
-    _textAttributes("fontFamily", textAttributes.fontFamily);
+  if (!fragmentAttributes.fontFamily.empty()) {
+    _textAttributes("fontFamily", fragmentAttributes.fontFamily);
   }
-  if (!std::isnan(textAttributes.fontSize)) {
-    _textAttributes("fontSize", textAttributes.fontSize);
+  if (!std::isnan(fragmentAttributes.fontSize)) {
+    _textAttributes("fontSize", fragmentAttributes.fontSize);
   }
-  if (!std::isnan(textAttributes.fontSizeMultiplier)) {
-    _textAttributes("fontSizeMultiplier", textAttributes.fontSizeMultiplier);
+  if (!std::isnan(fragmentAttributes.fontSizeMultiplier)) {
+    _textAttributes("fontSizeMultiplier", fragmentAttributes.fontSizeMultiplier);
   }
-  if (textAttributes.fontWeight.has_value()) {
-    _textAttributes("fontWeight", toString(*textAttributes.fontWeight));
+  if (fragmentAttributes.fontWeight.has_value()) {
+    _textAttributes("fontWeight", toString(*fragmentAttributes.fontWeight));
   }
-  if (textAttributes.fontStyle.has_value()) {
-    _textAttributes("fontStyle", toString(*textAttributes.fontStyle));
+  if (fragmentAttributes.fontStyle.has_value()) {
+    _textAttributes("fontStyle", toString(*fragmentAttributes.fontStyle));
   }
-  if (textAttributes.fontVariant.has_value()) {
-    _textAttributes("fontVariant", toDynamic(*textAttributes.fontVariant));
+  if (fragmentAttributes.fontVariant.has_value()) {
+    _textAttributes("fontVariant", toDynamic(*fragmentAttributes.fontVariant));
   }
-  if (textAttributes.allowFontScaling.has_value()) {
-    _textAttributes("allowFontScaling", *textAttributes.allowFontScaling);
+  if (fragmentAttributes.allowFontScaling.has_value()) {
+    _textAttributes("allowFontScaling", *fragmentAttributes.allowFontScaling);
   }
-  if (!std::isnan(textAttributes.letterSpacing)) {
-    _textAttributes("letterSpacing", textAttributes.letterSpacing);
+  if (!std::isnan(fragmentAttributes.letterSpacing)) {
+    _textAttributes("letterSpacing", fragmentAttributes.letterSpacing);
   }
-  if (textAttributes.textTransform.has_value()) {
-    _textAttributes("textTransform", toString(*textAttributes.textTransform));
+  if (fragmentAttributes.textTransform.has_value()) {
+    _textAttributes("textTransform", toString(*fragmentAttributes.textTransform));
   }
-  if (!std::isnan(textAttributes.lineHeight)) {
-    _textAttributes("lineHeight", textAttributes.lineHeight);
+  if (!std::isnan(fragmentAttributes.lineHeight)) {
+    _textAttributes("lineHeight", fragmentAttributes.lineHeight);
   }
-  if (textAttributes.alignment.has_value()) {
-    _textAttributes("alignment", toString(*textAttributes.alignment));
+  if (fragmentAttributes.alignment.has_value()) {
+    _textAttributes("alignment", toString(*fragmentAttributes.alignment));
   }
-  if (textAttributes.baseWritingDirection.has_value()) {
+  if (fragmentAttributes.baseWritingDirection.has_value()) {
     _textAttributes(
-        "baseWritingDirection", toString(*textAttributes.baseWritingDirection));
+        "baseWritingDirection", toString(*fragmentAttributes.baseWritingDirection));
   }
-  if (textAttributes.lineBreakStrategy.has_value()) {
+  if (fragmentAttributes.lineBreakStrategy.has_value()) {
     _textAttributes(
-        "lineBreakStrategyIOS", toString(*textAttributes.lineBreakStrategy));
+        "lineBreakStrategyIOS", toString(*fragmentAttributes.lineBreakStrategy));
   }
   // Decoration
-  if (textAttributes.textDecorationColor) {
+  if (fragmentAttributes.textDecorationColor) {
     _textAttributes(
         "textDecorationColor",
-        toAndroidRepr(textAttributes.textDecorationColor));
+        toAndroidRepr(fragmentAttributes.textDecorationColor));
   }
-  if (textAttributes.textDecorationLineType.has_value()) {
+  if (fragmentAttributes.textDecorationLineType.has_value()) {
     _textAttributes(
-        "textDecorationLine", toString(*textAttributes.textDecorationLineType));
+        "textDecorationLine", toString(*fragmentAttributes.textDecorationLineType));
   }
-  if (textAttributes.textDecorationStyle.has_value()) {
+  if (fragmentAttributes.textDecorationStyle.has_value()) {
     _textAttributes(
-        "textDecorationStyle", toString(*textAttributes.textDecorationStyle));
+        "textDecorationStyle", toString(*fragmentAttributes.textDecorationStyle));
   }
   // Shadow
-  // textShadowOffset = textAttributes.textShadowOffset.has_value() ?
-  // textAttributes.textShadowOffset.value() : textShadowOffset;
-  if (!std::isnan(textAttributes.textShadowRadius)) {
-    _textAttributes("textShadowRadius", textAttributes.textShadowRadius);
+  // textShadowOffset = fragmentAttributes.textShadowOffset.has_value() ?
+  // fragmentAttributes.textShadowOffset.value() : textShadowOffset;
+  if (!std::isnan(fragmentAttributes.textShadowRadius)) {
+    _textAttributes("textShadowRadius", fragmentAttributes.textShadowRadius);
   }
-  if (textAttributes.textShadowColor) {
+  if (fragmentAttributes.textShadowColor) {
     _textAttributes(
-        "textShadowColor", toAndroidRepr(textAttributes.textShadowColor));
+        "textShadowColor", toAndroidRepr(fragmentAttributes.textShadowColor));
   }
   // Special
-  if (textAttributes.isHighlighted.has_value()) {
-    _textAttributes("isHighlighted", *textAttributes.isHighlighted);
+  if (fragmentAttributes.isHighlighted.has_value()) {
+    _textAttributes("isHighlighted", *fragmentAttributes.isHighlighted);
   }
-  if (textAttributes.layoutDirection.has_value()) {
+  if (fragmentAttributes.layoutDirection.has_value()) {
     _textAttributes(
-        "layoutDirection", toString(*textAttributes.layoutDirection));
+        "layoutDirection", toString(*fragmentAttributes.layoutDirection));
   }
-  if (textAttributes.accessibilityRole.has_value()) {
+  if (fragmentAttributes.accessibilityRole.has_value()) {
     _textAttributes(
-        "accessibilityRole", toString(*textAttributes.accessibilityRole));
+        "accessibilityRole", toString(*fragmentAttributes.accessibilityRole));
   }
   return _textAttributes;
 }
@@ -919,7 +919,7 @@ inline folly::dynamic toDynamic(const AttributedString::Fragment& fragment) {
     value["width"] = fragment.parentShadowView.layoutMetrics.frame.size.width;
     value["height"] = fragment.parentShadowView.layoutMetrics.frame.size.height;
   }
-  value["textAttributes"] = toDynamic(fragment.textAttributes);
+  value["attributes"] = toDynamic(fragment.attributes);
 
   return value;
 }
@@ -1056,114 +1056,116 @@ inline MapBuffer toMapBuffer(const FontVariant& fontVariant) {
   return builder.build();
 }
 
-inline MapBuffer toMapBuffer(const TextAttributes& textAttributes) {
+inline MapBuffer toMapBuffer(const FragmentAttributes& fragmentAttributes) {
   auto builder = MapBufferBuilder();
-  if (textAttributes.foregroundColor) {
+  if (fragmentAttributes.foregroundColor) {
     builder.putInt(
-        TA_KEY_FOREGROUND_COLOR, toAndroidRepr(textAttributes.foregroundColor));
+        TA_KEY_FOREGROUND_COLOR, toAndroidRepr(fragmentAttributes.foregroundColor));
   }
-  if (textAttributes.backgroundColor) {
+  if (fragmentAttributes.backgroundColor) {
     builder.putInt(
-        TA_KEY_BACKGROUND_COLOR, toAndroidRepr(textAttributes.backgroundColor));
+        TA_KEY_BACKGROUND_COLOR, toAndroidRepr(fragmentAttributes.backgroundColor));
   }
-  if (!std::isnan(textAttributes.opacity)) {
-    builder.putDouble(TA_KEY_OPACITY, textAttributes.opacity);
+  if (!std::isnan(fragmentAttributes.opacity)) {
+    builder.putDouble(TA_KEY_OPACITY, fragmentAttributes.opacity);
   }
-  if (!textAttributes.fontFamily.empty()) {
-    builder.putString(TA_KEY_FONT_FAMILY, textAttributes.fontFamily);
+  if (!fragmentAttributes.fontFamily.empty()) {
+    builder.putString(TA_KEY_FONT_FAMILY, fragmentAttributes.fontFamily);
   }
-  if (!std::isnan(textAttributes.fontSize)) {
-    builder.putDouble(TA_KEY_FONT_SIZE, textAttributes.fontSize);
+  if (!std::isnan(fragmentAttributes.fontSize)) {
+    builder.putDouble(TA_KEY_FONT_SIZE, fragmentAttributes.fontSize);
   }
-  if (!std::isnan(textAttributes.fontSizeMultiplier)) {
+  if (!std::isnan(fragmentAttributes.fontSizeMultiplier)) {
     builder.putDouble(
-        TA_KEY_FONT_SIZE_MULTIPLIER, textAttributes.fontSizeMultiplier);
+        TA_KEY_FONT_SIZE_MULTIPLIER, fragmentAttributes.fontSizeMultiplier);
   }
-  if (textAttributes.fontWeight.has_value()) {
-    builder.putString(TA_KEY_FONT_WEIGHT, toString(*textAttributes.fontWeight));
+  if (fragmentAttributes.fontWeight.has_value()) {
+    builder.putString(TA_KEY_FONT_WEIGHT, toString(*fragmentAttributes.fontWeight));
   }
-  if (textAttributes.fontStyle.has_value()) {
-    builder.putString(TA_KEY_FONT_STYLE, toString(*textAttributes.fontStyle));
+  if (fragmentAttributes.fontStyle.has_value()) {
+    builder.putString(TA_KEY_FONT_STYLE, toString(*fragmentAttributes.fontStyle));
   }
-  if (textAttributes.fontVariant.has_value()) {
-    auto fontVariantMap = toMapBuffer(*textAttributes.fontVariant);
+  if (fragmentAttributes.fontVariant.has_value()) {
+    auto fontVariantMap = toMapBuffer(*fragmentAttributes.fontVariant);
     builder.putMapBuffer(TA_KEY_FONT_VARIANT, fontVariantMap);
   }
-  if (textAttributes.allowFontScaling.has_value()) {
+  if (fragmentAttributes.allowFontScaling.has_value()) {
     builder.putBool(
-        TA_KEY_ALLOW_FONT_SCALING, *textAttributes.allowFontScaling);
+        TA_KEY_ALLOW_FONT_SCALING, *fragmentAttributes.allowFontScaling);
   }
-  if (!std::isnan(textAttributes.letterSpacing)) {
-    builder.putDouble(TA_KEY_LETTER_SPACING, textAttributes.letterSpacing);
+  if (!std::isnan(fragmentAttributes.letterSpacing)) {
+    builder.putDouble(TA_KEY_LETTER_SPACING, fragmentAttributes.letterSpacing);
   }
-  if (!std::isnan(textAttributes.lineHeight)) {
-    builder.putDouble(TA_KEY_LINE_HEIGHT, textAttributes.lineHeight);
+  if (!std::isnan(fragmentAttributes.lineHeight)) {
+    builder.putDouble(TA_KEY_LINE_HEIGHT, fragmentAttributes.lineHeight);
   }
-  if (textAttributes.alignment.has_value()) {
-    builder.putString(TA_KEY_ALIGNMENT, toString(*textAttributes.alignment));
+  if (fragmentAttributes.alignment.has_value()) {
+    builder.putString(TA_KEY_ALIGNMENT, toString(*fragmentAttributes.alignment));
   }
-  if (textAttributes.baseWritingDirection.has_value()) {
+  if (fragmentAttributes.baseWritingDirection.has_value()) {
     builder.putString(
         TA_KEY_BEST_WRITING_DIRECTION,
-        toString(*textAttributes.baseWritingDirection));
+        toString(*fragmentAttributes.baseWritingDirection));
   }
-  if (textAttributes.lineBreakStrategy.has_value()) {
+  if (fragmentAttributes.lineBreakStrategy.has_value()) {
     builder.putString(
         TA_KEY_LINE_BREAK_STRATEGY,
-        toString(*textAttributes.lineBreakStrategy));
+        toString(*fragmentAttributes.lineBreakStrategy));
   }
-  if (textAttributes.textTransform.has_value()) {
+  if (fragmentAttributes.textTransform.has_value()) {
     builder.putString(
-        TA_KEY_TEXT_TRANSFORM, toString(*textAttributes.textTransform));
+        TA_KEY_TEXT_TRANSFORM, toString(*fragmentAttributes.textTransform));
   }
 
   // Decoration
-  if (textAttributes.textDecorationColor) {
+  if (fragmentAttributes.textDecorationColor) {
     builder.putInt(
         TA_KEY_TEXT_DECORATION_COLOR,
-        toAndroidRepr(textAttributes.textDecorationColor));
+        toAndroidRepr(fragmentAttributes.textDecorationColor));
   }
-  if (textAttributes.textDecorationLineType.has_value()) {
+  if (fragmentAttributes.textDecorationLineType.has_value()) {
     builder.putString(
         TA_KEY_TEXT_DECORATION_LINE,
-        toString(*textAttributes.textDecorationLineType));
+        toString(*fragmentAttributes.textDecorationLineType));
   }
-  if (textAttributes.textDecorationStyle.has_value()) {
+  if (fragmentAttributes.textDecorationStyle.has_value()) {
     builder.putString(
         TA_KEY_TEXT_DECORATION_STYLE,
-        toString(*textAttributes.textDecorationStyle));
+        toString(*fragmentAttributes.textDecorationStyle));
   }
 
   // Shadow
-  if (!std::isnan(textAttributes.textShadowRadius)) {
+  if (!std::isnan(fragmentAttributes.textShadowRadius)) {
     builder.putDouble(
-        TA_KEY_TEXT_SHADOW_RADIUS, textAttributes.textShadowRadius);
+        TA_KEY_TEXT_SHADOW_RADIUS, fragmentAttributes.textShadowRadius);
   }
-  if (textAttributes.textShadowColor) {
+  if (fragmentAttributes.textShadowColor) {
     builder.putInt(
         TA_KEY_TEXT_SHADOW_COLOR,
-        toAndroidRepr(textAttributes.textShadowColor));
+        toAndroidRepr(fragmentAttributes.textShadowColor));
   }
-  if (textAttributes.textShadowOffset) {
+  if (fragmentAttributes.textShadowOffset) {
     builder.putDouble(
-        TA_KEY_TEXT_SHADOW_OFFSET_DX, textAttributes.textShadowOffset->width);
+        TA_KEY_TEXT_SHADOW_OFFSET_DX,
+        fragmentAttributes.textShadowOffset->width);
     builder.putDouble(
-        TA_KEY_TEXT_SHADOW_OFFSET_DY, textAttributes.textShadowOffset->height);
+        TA_KEY_TEXT_SHADOW_OFFSET_DY,
+        fragmentAttributes.textShadowOffset->height);
   }
   // Special
-  if (textAttributes.isHighlighted.has_value()) {
-    builder.putBool(TA_KEY_IS_HIGHLIGHTED, *textAttributes.isHighlighted);
+  if (fragmentAttributes.isHighlighted.has_value()) {
+    builder.putBool(TA_KEY_IS_HIGHLIGHTED, *fragmentAttributes.isHighlighted);
   }
-  if (textAttributes.layoutDirection.has_value()) {
+  if (fragmentAttributes.layoutDirection.has_value()) {
     builder.putString(
-        TA_KEY_LAYOUT_DIRECTION, toString(*textAttributes.layoutDirection));
+        TA_KEY_LAYOUT_DIRECTION, toString(*fragmentAttributes.layoutDirection));
   }
-  if (textAttributes.accessibilityRole.has_value()) {
+  if (fragmentAttributes.accessibilityRole.has_value()) {
     builder.putString(
-        TA_KEY_ACCESSIBILITY_ROLE, toString(*textAttributes.accessibilityRole));
+        TA_KEY_ACCESSIBILITY_ROLE, toString(*fragmentAttributes.accessibilityRole));
   }
-  if (textAttributes.role.has_value()) {
-    builder.putInt(TA_KEY_ROLE, static_cast<int32_t>(*textAttributes.role));
+  if (fragmentAttributes.role.has_value()) {
+    builder.putInt(TA_KEY_ROLE, static_cast<int32_t>(*fragmentAttributes.role));
   }
   return builder.build();
 }
@@ -1183,7 +1185,7 @@ inline MapBuffer toMapBuffer(const AttributedString::Fragment& fragment) {
         FR_KEY_HEIGHT,
         fragment.parentShadowView.layoutMetrics.frame.size.height);
   }
-  auto textAttributesMap = toMapBuffer(fragment.textAttributes);
+  auto textAttributesMap = toMapBuffer(fragment.attributes);
   builder.putMapBuffer(FR_KEY_TEXT_ATTRIBUTES, textAttributesMap);
 
   return builder.build();

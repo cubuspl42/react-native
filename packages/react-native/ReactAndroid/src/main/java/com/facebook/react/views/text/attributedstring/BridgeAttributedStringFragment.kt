@@ -10,7 +10,7 @@ import com.facebook.react.views.text.TextAttributeProps
  */
 internal class BridgeAttributedStringFragment(private val fragment: ReadableMap) : AttributedStringFragment {
   override val textAttributeProps: TextAttributeProps
-    get() = TextAttributeProps.fromReadableMap(ReactStylesDiffMap(fragment.getMap("textAttributes")))
+    get() = TextAttributeProps.fromReadableMap(ReactStylesDiffMap(fragment.getMap("attributes")))
 
   override val string: String?
     get() = fragment.getString("string")

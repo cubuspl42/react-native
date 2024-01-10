@@ -26,7 +26,7 @@ inline ShadowView shadowViewFromShadowNode(const ShadowNode& shadowNode) {
 }
 
 void BaseTextShadowNode::buildAttributedString(
-    const TextAttributes& baseTextAttributes,
+    const FragmentAttributes& baseFragmentAttributes,
     const ShadowNode& parentNode,
     AttributedString& outAttributedString,
     Attachments& outAttachments) {
@@ -37,7 +37,7 @@ void BaseTextShadowNode::buildAttributedString(
     if (rawTextShadowNode != nullptr) {
       auto fragment = AttributedString::Fragment{};
       fragment.string = rawTextShadowNode->getConcreteProps().text;
-      fragment.textAttributes = baseTextAttributes;
+      fragment.attributes = baseFragmentAttributes;
 
       // Storing a retaining pointer to `ParagraphShadowNode` inside
       // `attributedString` causes a retain cycle (besides that fact that we
@@ -51,7 +51,7 @@ void BaseTextShadowNode::buildAttributedString(
     // TextShadowNode
     auto textShadowNode = traitCast<const TextShadowNode*>(childNode.get());
     if (textShadowNode != nullptr) {
-      auto localTextAttributes = baseTextAttributes;
+      auto localTextAttributes = baseFragmentAttributes;
       localTextAttributes.apply(
           textShadowNode->getConcreteProps().textAttributes);
       buildAttributedString(
@@ -66,7 +66,7 @@ void BaseTextShadowNode::buildAttributedString(
     auto fragment = AttributedString::Fragment{};
     fragment.string = AttributedString::Fragment::AttachmentCharacter();
     fragment.parentShadowView = shadowViewFromShadowNode(*childNode);
-    fragment.textAttributes = baseTextAttributes;
+    fragment.attributes = baseFragmentAttributes;
     auto fragmentHandle = outAttributedString.appendFragment(fragment);
     outAttachments.push_back(Attachment{childNode.get(), fragmentHandle});
   }

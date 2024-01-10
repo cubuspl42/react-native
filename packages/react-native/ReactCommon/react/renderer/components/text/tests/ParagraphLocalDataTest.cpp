@@ -31,7 +31,7 @@ TEST(ParagraphLocalDataTest, testSomething) {
   text.fontStyle = FontStyle::Italic;
   text.fontWeight = FontWeight::Thin;
   text.fontVariant = FontVariant::TabularNums;
-  fragment.textAttributes = text;
+  fragment.attributes = text;
   attributedString.prependFragment(fragment);
 
   auto paragraphState = ParagraphState{};
@@ -40,7 +40,7 @@ TEST(ParagraphLocalDataTest, testSomething) {
   auto result = toDynamic(paragraphState)["attributedString"];
 
   EXPECT_EQ(result["string"], fragment.string);
-  auto textAttribute = result["fragments"][0]["textAttributes"];
+  auto textAttribute = result["fragments"][0]["attributes"];
   EXPECT_EQ(textAttribute["foregroundColor"], toDynamic(text.foregroundColor));
   EXPECT_EQ(textAttribute["opacity"], text.opacity);
   EXPECT_EQ(textAttribute["fontStyle"], toString(*text.fontStyle));

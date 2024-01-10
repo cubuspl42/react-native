@@ -49,16 +49,16 @@ const Content& ParagraphShadowNode::getContent(
 
   ensureUnsealed();
 
-  auto textAttributes = TextAttributes::defaultTextAttributes();
-  textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
-  textAttributes.apply(getConcreteProps().textAttributes);
-  textAttributes.layoutDirection =
+  auto fragmentAttributes = FragmentAttributes{};
+  fragmentAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
+  fragmentAttributes.apply(getConcreteProps().textAttributes);
+  fragmentAttributes.layoutDirection =
       YGNodeLayoutGetDirection(&yogaNode_) == YGDirectionRTL
       ? LayoutDirection::RightToLeft
       : LayoutDirection::LeftToRight;
   auto attributedString = AttributedString{};
   auto attachments = Attachments{};
-  buildAttributedString(textAttributes, *this, attributedString, attachments);
+  buildAttributedString(fragmentAttributes, *this, attributedString, attachments);
 
   content_ = Content{
       attributedString, getConcreteProps().paragraphAttributes, attachments};
@@ -146,10 +146,10 @@ Size ParagraphShadowNode::measureContent(
     // TODO T67606511: We will redefine the measurement of empty strings as part
     // of T67606511
     auto string = BaseTextShadowNode::getEmptyPlaceholder();
-    auto textAttributes = TextAttributes::defaultTextAttributes();
-    textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
-    textAttributes.apply(getConcreteProps().textAttributes);
-    attributedString.appendFragment({string, textAttributes, {}});
+    auto fragmentAttributes = FragmentAttributes{};
+    fragmentAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
+    fragmentAttributes.apply(getConcreteProps().textAttributes);
+    attributedString.appendFragment({string, fragmentAttributes, {}});
   }
 
   TextLayoutContext textLayoutContext{};

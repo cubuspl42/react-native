@@ -34,13 +34,13 @@ void AndroidTextInputShadowNode::setContextContainer(
 
 AttributedString AndroidTextInputShadowNode::getAttributedString() const {
   // Use BaseTextShadowNode to get attributed string from children
-  auto childTextAttributes = TextAttributes::defaultTextAttributes();
-  childTextAttributes.apply(getConcreteProps().textAttributes);
+  auto childFragmentAttributes = FragmentAttributes{};
+  childFragmentAttributes.apply(getConcreteProps().textAttributes);
 
   auto attributedString = AttributedString{};
   auto attachments = BaseTextShadowNode::Attachments{};
   BaseTextShadowNode::buildAttributedString(
-      childTextAttributes, *this, attributedString, attachments);
+      childFragmentAttributes, *this, attributedString, attachments);
 
   // BaseTextShadowNode only gets children. We must detect and prepend text
   // value attributes manually.
@@ -49,11 +49,11 @@ AttributedString AndroidTextInputShadowNode::getAttributedString() const {
     textAttributes.apply(getConcreteProps().textAttributes);
     auto fragment = AttributedString::Fragment{};
     fragment.string = getConcreteProps().text;
-    fragment.textAttributes = textAttributes;
+    fragment.attributes = textAttributes;
     // If the TextInput opacity is 0 < n < 1, the opacity of the TextInput and
     // text value's background will stack. This is a hack/workaround to prevent
     // that effect.
-    fragment.textAttributes.backgroundColor = clearColor();
+    fragment.attributes.backgroundColor = clearColor();
     fragment.parentShadowView = ShadowView(*this);
     attributedString.prependFragment(fragment);
   }
@@ -83,7 +83,7 @@ AttributedString AndroidTextInputShadowNode::getPlaceholderAttributedString()
 
   // If there's no text, it's possible that this Fragment isn't actually
   // appended to the AttributedString (see implementation of appendFragment)
-  fragment.textAttributes = textAttributes;
+  fragment.attributes = textAttributes;
   fragment.parentShadowView = ShadowView(*this);
   textAttributedString.appendFragment(fragment);
 

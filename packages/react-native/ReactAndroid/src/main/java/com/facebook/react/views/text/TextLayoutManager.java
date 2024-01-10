@@ -91,7 +91,7 @@ public class TextLayoutManager {
     ReadableArray fragments = attributedString.getArray("fragments");
     if (fragments != null && fragments.size() > 0) {
       ReadableMap fragment = fragments.getMap(0);
-      ReadableMap map = fragment.getMap("textAttributes");
+      ReadableMap map = fragment.getMap("attributes");
       return map != null
           && TextAttributeProps.getLayoutDirection(map.getString(ViewProps.LAYOUT_DIRECTION))
               == LayoutDirection.RTL;
@@ -161,7 +161,7 @@ public class TextLayoutManager {
       // ReactRawText
       TextAttributeProps textAttributes =
           TextAttributeProps.fromReadableMap(
-              new ReactStylesDiffMap(fragment.getMap("textAttributes")));
+              new ReactStylesDiffMap(fragment.getMap("attributes")));
 
       sb.append(TextTransform.apply(fragment.getString("string"), textAttributes.mTextTransform));
 

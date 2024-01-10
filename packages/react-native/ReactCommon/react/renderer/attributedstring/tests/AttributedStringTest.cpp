@@ -6,7 +6,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <react/renderer/attributedstring/TextAttributes.h>
+#include <react/renderer/attributedstring/FragmentAttributes.h>
 #include <react/renderer/attributedstring/conversions.h>
 #include <react/renderer/attributedstring/primitives.h>
 #include <react/renderer/core/graphicsConversions.h>
@@ -20,20 +20,20 @@ TEST(AttributedStringTest, testToDynamic) {
   auto fragment = AttributedString::Fragment{};
   fragment.string = "test";
 
-  auto text = TextAttributes{};
+  auto text = FragmentAttributes{};
   text.foregroundColor = {
       colorFromComponents({100 / 255.0, 153 / 255.0, 200 / 255.0, 1.0})};
   text.opacity = 0.5;
   text.fontStyle = FontStyle::Italic;
   text.fontWeight = FontWeight::Thin;
   text.fontVariant = FontVariant::TabularNums;
-  fragment.textAttributes = text;
+  fragment.attributes = text;
 
   attributedString.appendFragment(fragment);
 
   auto result = toDynamic(attributedString);
   EXPECT_EQ(result["string"], fragment.string);
-  auto textAttribute = result["fragments"][0]["textAttributes"];
+  auto textAttribute = result["fragments"][0]["attributes"];
   EXPECT_EQ(textAttribute["foregroundColor"], toDynamic(text.foregroundColor));
   EXPECT_EQ(textAttribute["opacity"], text.opacity);
   EXPECT_EQ(textAttribute["fontStyle"], toString(text.fontStyle.value()));

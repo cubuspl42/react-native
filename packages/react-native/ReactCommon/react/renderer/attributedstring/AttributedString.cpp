@@ -36,19 +36,19 @@ bool Fragment::isAttachment() const {
 bool Fragment::operator==(const Fragment& rhs) const {
   return std::tie(
              string,
-             textAttributes,
+             attributes,
              parentShadowView.tag,
              parentShadowView.layoutMetrics) ==
       std::tie(
              rhs.string,
-             rhs.textAttributes,
+             rhs.attributes,
              rhs.parentShadowView.tag,
              rhs.parentShadowView.layoutMetrics);
 }
 
 bool Fragment::isContentEqual(const Fragment& rhs) const {
-  return std::tie(string, textAttributes) ==
-      std::tie(rhs.string, rhs.textAttributes);
+  return std::tie(string, attributes) ==
+      std::tie(rhs.string, rhs.attributes);
 }
 
 bool Fragment::operator!=(const Fragment& rhs) const {
@@ -103,7 +103,7 @@ bool Shard::compareTextAttributesWithoutFrame(const Shard& rhs) const {
   }
 
   for (size_t i = 0; i < fragments_.size(); i++) {
-    if (fragments_[i].textAttributes != rhs.fragments_[i].textAttributes ||
+    if (fragments_[i].attributes != rhs.fragments_[i].attributes ||
         fragments_[i].string != rhs.fragments_[i].string) {
       return false;
     }
@@ -308,7 +308,7 @@ SharedDebugStringConvertibleList Shard::getDebugChildren() const {
 
   for (auto&& fragment : fragments_) {
     auto propsList =
-        fragment.textAttributes.DebugStringConvertible::getDebugProps();
+        fragment.attributes.DebugStringConvertible::getDebugProps();
 
     list.push_back(std::make_shared<DebugStringConvertibleItem>(
         "Fragment",

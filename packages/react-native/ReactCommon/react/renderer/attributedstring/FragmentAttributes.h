@@ -12,6 +12,7 @@
 #include <optional>
 
 #include <react/renderer/attributedstring/primitives.h>
+#include <react/renderer/attributedstring/TextAttributes.h>
 #include <react/renderer/components/view/AccessibilityPrimitives.h>
 #include <react/renderer/core/LayoutPrimitives.h>
 #include <react/renderer/core/ReactPrimitives.h>
@@ -23,27 +24,28 @@
 
 namespace facebook::react {
 
-class TextAttributes;
+class FragmentAttributes;
 
-using SharedTextAttributes = std::shared_ptr<const TextAttributes>;
+using SharedFragmentAttributes = std::shared_ptr<const FragmentAttributes>;
 
 /**
- * Text node attributes
+ * Effective attributes of a text fragment, built by processing a hierarchy of
+ * text nodes.
  */
-class TextAttributes : public DebugStringConvertible {
+class FragmentAttributes : public DebugStringConvertible {
  public:
 
 #pragma mark - Fields
 
   // Color
-  SharedColor foregroundColor{};
-  SharedColor backgroundColor{};
+  SharedColor foregroundColor{blackColor()};
+  SharedColor backgroundColor{clearColor()};
   Float opacity{std::numeric_limits<Float>::quiet_NaN()};
 
   // Font
   std::string fontFamily{""};
-  Float fontSize{std::numeric_limits<Float>::quiet_NaN()};
-  Float fontSizeMultiplier{std::numeric_limits<Float>::quiet_NaN()};
+  Float fontSize{14.0};
+  Float fontSizeMultiplier{1.0};
   std::optional<FontWeight> fontWeight{};
   std::optional<FontStyle> fontStyle{};
   std::optional<FontVariant> fontVariant{};
@@ -87,8 +89,8 @@ class TextAttributes : public DebugStringConvertible {
 
 #pragma mark - Operators
 
-  bool operator==(const TextAttributes& rhs) const;
-  bool operator!=(const TextAttributes& rhs) const;
+  bool operator==(const FragmentAttributes& rhs) const;
+  bool operator!=(const FragmentAttributes& rhs) const;
 
 #pragma mark - DebugStringConvertible
 
@@ -102,9 +104,9 @@ class TextAttributes : public DebugStringConvertible {
 namespace std {
 
 template <>
-struct hash<facebook::react::TextAttributes> {
+struct hash<facebook::react::FragmentAttributes> {
   size_t operator()(
-      const facebook::react::TextAttributes& textAttributes) const {
+      const facebook::react::FragmentAttributes& textAttributes) const {
     return facebook::react::hash_combine(
         textAttributes.foregroundColor,
         textAttributes.backgroundColor,
@@ -135,4 +137,5 @@ struct hash<facebook::react::TextAttributes> {
         textAttributes.role);
   }
 };
+
 } // namespace std

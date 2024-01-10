@@ -142,6 +142,7 @@ public class TextAttributeProps implements EffectiveTextAttributeProvider {
 
   private TextAttributeProps() {}
 
+  // TODO: Nuke unused
   /** Build a TextAttributeProps using data from the {@link MapBuffer} received as a parameter. */
   public static TextAttributeProps fromMapBuffer(MapBuffer props) {
     TextAttributeProps result = new TextAttributeProps();

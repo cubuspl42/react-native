@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include <react/renderer/attributedstring/TextAttributes.h>
+#include <react/renderer/attributedstring/FragmentAttributes.h>
 #include <react/renderer/attributedstring/ShardAttributes.h>
 #include <react/renderer/core/Sealable.h>
 #include <react/renderer/core/ShadowNode.h>
@@ -46,7 +46,7 @@ class AttributedString : public Sealable, public DebugStringConvertible {
      * Defines the attributes (like font, color, size etc.) of the text
      * fragment.
      */
-    TextAttributes textAttributes;
+    FragmentAttributes attributes;
 
     /*
      * The `ShadowView` that is associated with the encapsulated text fragment.
@@ -249,7 +249,7 @@ struct hash<facebook::react::AttributedString::Fragment> {
       const facebook::react::AttributedString::Fragment& fragment) const {
     return facebook::react::hash_combine(
         fragment.string,
-        fragment.textAttributes,
+        fragment.attributes,
         fragment.parentShadowView,
         fragment.parentShadowView.layoutMetrics);
   }

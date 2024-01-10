@@ -362,14 +362,14 @@ static NSMutableAttributedString *RCTNSAttributedStringFragmentFromFragment(
   } else {
     NSString *string = [NSString stringWithUTF8String:fragment.string.c_str()];
 
-    if (fragment.textAttributes.textTransform.has_value()) {
-      auto textTransform = fragment.textAttributes.textTransform.value();
+    if (fragment.attributes.textTransform.has_value()) {
+      auto textTransform = fragment.attributes.textTransform.value();
       string = RCTNSStringFromStringApplyingTextTransform(string, textTransform);
     }
 
     return [[NSMutableAttributedString alloc]
         initWithString:string
-            attributes:RCTNSTextAttributesFromTextAttributes(fragment.textAttributes)];
+            attributes:RCTNSTextAttributesFromTextAttributes(fragment.attributes)];
   }
 }
 
